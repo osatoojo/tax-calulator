@@ -1,29 +1,32 @@
-# README #
+# TAX CALCULATOR APP #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Welcome.....
 
-### What is this repository for? ###
+This is a tax-calculator app that leverages on an existing api to get tax-brackets and calculates tax.
+The tax is calculated based on the year and salary(amount). In case of down-time on the tax-brackets api, I have implemented a cache. 
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+#### Tech used
+- Java - language
+- Springboot - framework for configuration and ease of build
+- docker/dockercompose - compose for containerization
+- cache - to store "interview-test-server" api results - to reduce multiple calls
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+###To Set Up.. ###
 
-### Contribution guidelines ###
+Install docker and run the following commands
 
-* Writing tests
-* Code review
-* Other guidelines
+```bash
+make docker
+```
 
-### Who do I talk to? ###
+###To Test The Application.. ###
 
-* Repo owner or admin
-* Other community or team contact
+On a browser type:
+[http://localhost:9031/tax-calc/api/v1/year/{year}/salary/{salary}](http://localhost:9031/tax-calc/api/v1/year/2019/salary/10000)
+- example http://localhost:9031/tax-calc/api/v1/year/2019/salary/10000
+
+Or 
+
+on a commandline/terminal type:
+curl "http://localhost:9031/tax-calc/api/v1/year/2020/salary/10000"

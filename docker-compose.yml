@@ -1,0 +1,42 @@
+# Compose file version
+version: '3.9'
+
+# services
+services:
+
+  # backend (tax-bracket server)
+  interview-test-server:
+    container_name: points-interview-test-server
+    build:
+      context: points-interview-test-server
+      dockerfile: Dockerfile
+    image: ptsdocker16/interview-test-server
+    ports:
+      - "5000:5000"
+    restart: always
+    pull_policy: always
+    networks:
+      - app-network
+
+
+
+  tax-calculator-server:
+    depends_on:
+      - interview-test-server
+    container_name: tax-calculator
+    build:
+      context: tax-calculator
+      dockerfile: Dockerfile
+    image: osatoojo/tax-calculator
+    environment:
+      tax.brackets.url: "http://interview-test-server:5000/tax-calculator/brackets"
+    pull_policy: always
+    ports:
+      - "9031:9031"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+      driver: bridge
