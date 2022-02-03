@@ -59,4 +59,5 @@ class TaxCalculatorControllerITest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.effectiveTaxRate", is(35.0)));
     }
+
 }
