@@ -1,33 +1,35 @@
 package com.points.taxcalculator.service.impl;
 
 import com.points.taxcalculator.entity.SalaryTaxResponse;
-import com.points.taxcalculator.service.TaxCalculatorService;
+import com.points.taxcalculator.entity.TaxBracket;
+import com.points.taxcalculator.exception.RemoteServerException;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@SpringBootTest
+
 public class TaxCalculatorServiceImplUnitTest {
 
     @InjectMocks
     private TaxCalculatorServiceImpl taxCalculatorService;
 
-    private static final String taxBracketsUrl = "http://localhost:5000/tax-calculator/brackets";
+    @Mock
+    private TaxBracketServiceImpl taxBracketService;
+
 
     @Before
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(taxCalculatorService, "taxBracketsUrl", taxBracketsUrl);
     }
 
     private Map<Integer, Double> getTaxPerBand() {
@@ -45,17 +47,26 @@ public class TaxCalculatorServiceImplUnitTest {
                 .build();
     }
 
+    private List<TaxBracket> getTaxBrackets(){
+        List<TaxBracket> taxBrackets = new ArrayList<>();
+        TaxBracket.builder()
+                .max(20000)
+                .min(10000)
+                .rate(0.1)
+                .build();
+      return taxBrackets;
+    }
+
 
 
     @Test
-    void calculateTaxedSalary() {
-//        final SalaryTaxResponse salaryTaxResponse = taxCalculatorService.calculateTaxedSalary(new BigDecimal(60000),2021);
-////        Assertions.assertNotNull(salaryTaxResponse);
-////        Assertions.assertEquals(12300.0, salaryTaxResponse.getTotalTaxPayable());
-//
-//
-//
-//
+    public void test_GetTaxedSalary() throws RemoteServerException {
+        int year = 2019;
+        BigDecimal salary = new BigDecimal(1000);
+        Mockito.when(taxBracketService.getTaxBrackets(year)).thenReturn(getTaxBrackets());
+        final SalaryTaxResponse salaryTaxResponse = taxCalculatorService.calculateTax(salary, year);
+        System.out.println(salaryTaxResponse);
+        Assertions.assertEquals(0.0,salaryTaxResponse.getTotalTaxPayable());
     }
 
 

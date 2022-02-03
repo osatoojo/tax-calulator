@@ -60,4 +60,15 @@ class TaxCalculatorControllerITest {
                 .andExpect(jsonPath("$.effectiveTaxRate", is(35.0)));
     }
 
+    @Test
+    void test_givenInvalidUrl_thenGetException() throws Exception {
+        BigDecimal salary = new BigDecimal(60000);
+        int year = 2021;
+        given(taxCalculatorService.calculateTax(salary,2021)).willReturn(getSalaryTaxResponse());
+        mvc.perform(get(BASE_PATH + "yer/"+year+"/salary/" + salary)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+
 }

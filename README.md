@@ -13,8 +13,9 @@ The tax is calculated based on the year and salary(amount). In case of down-time
 
 
 ###To Set Up.. ###
-
-Install docker and run the following commands
+- Clone the git repository
+- On a command prompt/terminal, goto the project directory  
+- Run the following command (you must have docker installed)
 
 ```bash
 make docker
